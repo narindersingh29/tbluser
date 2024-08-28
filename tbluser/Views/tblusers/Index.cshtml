@@ -1,0 +1,74 @@
+﻿@model List<tbluser.Models.UserViewModel>
+
+@{
+    ViewData["Title"] = "User Details";
+    var successMessage = TempData["successMessage"]?.ToString();
+    var errorMessage = TempData["errorMessage"]?.ToString();
+}
+<h3>@ViewData["Title"]</h3>
+<hr />
+@if (!string.IsNullOrWhiteSpace(@successMessage))
+{
+    <div class="alert alert-success">
+        <strong>Success! </strong>@successMessage
+    </div>
+    <button type="button" class="btn-close float-end" data-bs-dissmiss="alert"></button>
+}
+else if (!string.IsNullOrWhiteSpace(@errorMessage))
+{
+    <div class="alert alert-danger">
+        <strong>Error! </strong>@errorMessage
+    </div>
+    <button type="button" class="btn-close float-end" data-bs-dissmiss="alert"></button>
+}
+<form>
+    <button asp-controller="tblUsers" asp-action="Create" class="btn btn-primary">Create User</button>
+    <table class="table table-responsive table-hover">
+        <thead>
+            <tr class="table-active">
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Address</th>
+                <th>Phone Number</th>
+                <th>E-Mail</th>
+                <th>Password</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var User in Model)
+                {
+                    <tr>
+                        <td>@User.ID</td>
+                        <td>@User.FirstName</td>
+                        <td>@User.LastName</td>
+                        <td>@User.Address</td>
+                        <td>@User.PhoneNumber</td>
+                        <td>@User.EMail</td>
+                        <td>@User.Password</td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <a asp-controller="tblUsers" asp-action="Edit" asp-route-id="@User.ID" class="btn btn-primary">Edit</a>
+                                <a asp-controller="tblUsers" asp-action="Delete" asp-route-id="@User.ID" class="btn btn-danger">Delete</a>
+
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7">
+                        <div>
+                            No User avialable at this moment!
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</form>
